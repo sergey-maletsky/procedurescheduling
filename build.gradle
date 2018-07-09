@@ -25,11 +25,25 @@ repositories {
 }
 
 dependencies {
-    testCompile("junit:junit")
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-aop")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-logging")
     compile("org.springframework.boot:spring-boot-starter-data-rest")
-    compile("org.springframework.boot:spring-boot-devtools")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+
+    compileOnly("org.springframework.boot:spring-boot-devtools")
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("junit:junit")
+
+    compile("io.springfox:springfox-swagger2:2.9.2")
+    compile("io.springfox:springfox-swagger-ui:2.9.2")
+    compile("org.projectlombok:lombok:1.18.0")
+    compile("org.jetbrains:annotations:16.0.2")
+
+    compile("org.apache.tomcat.embed:tomcat-embed-jasper:9.0.10")
+    compile group: 'jstl', name: 'jstl', version: '1.2'
+
+    compile("org.flywaydb:flyway-core:4.2.0")
+    compile("org.postgresql:postgresql:42.2.2")
 }

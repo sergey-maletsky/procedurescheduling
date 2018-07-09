@@ -1,0 +1,3 @@
+CREATE DATABASE pscheduling;
+CREATE USER pscheduler WITH SUPERUSER PASSWORD '9^<veu^Y[+';
+GRANT ALL PRIVILEGES ON DATABASE pscheduling TO pscheduler;
