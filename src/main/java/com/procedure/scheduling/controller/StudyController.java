@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -96,17 +95,8 @@ public class StudyController extends BaseController {
     @PostMapping
     public ResponseEntity<JsonResult> create(@Valid StudyDto study, BindingResult bindingResult) {
 
-        JsonResult result;
-        ResponseEntity<JsonResult> responseEntity;
-        if (bindingResult.hasErrors()) {
-            result = setValidationErrors(bindingResult);
-            responseEntity = new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-        } else {
-            StudyDto newStudy = studyService.save(study);
-            result = new JsonResult<>(NO_ERROR);
-            result.setResult(newStudy);
-            responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
-        }
+        ResponseEntity<JsonResult> responseEntity =
+                createResponse(study, bindingResult, studyDto -> studyService.save(studyDto));
 
         return responseEntity;
     }

@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +19,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.procedure.scheduling.dto.JsonResult.ErrorCode.NO_ERROR;
 
 @RestController
 @RequestMapping("/patients")
@@ -64,17 +61,8 @@ public class PatientController extends BaseController {
     @PostMapping
     public ResponseEntity<JsonResult> create(@Valid PatientDto patient, BindingResult bindingResult) {
 
-        JsonResult result;
-        ResponseEntity<JsonResult> responseEntity;
-        if (bindingResult.hasErrors()) {
-            result = setValidationErrors(bindingResult);
-            responseEntity = new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-        } else {
-            PatientDto newPatient = patientService.save(patient);
-            result = new JsonResult<>(NO_ERROR);
-            result.setResult(newPatient);
-            responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
-        }
+        ResponseEntity<JsonResult> responseEntity =
+                createResponse(patient, bindingResult, patientDto -> patientService.save(patientDto));
 
         return responseEntity;
     }
