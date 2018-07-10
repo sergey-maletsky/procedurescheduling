@@ -1,23 +1,18 @@
 package com.procedure.scheduling.controller;
 
 import com.procedure.scheduling.BaseRestApiTest;
-import com.procedure.scheduling.dto.JsonResult;
 import com.procedure.scheduling.dto.PatientDto;
 import com.procedure.scheduling.model.Gender;
 import com.procedure.scheduling.service.PatientService;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.procedure.scheduling.dto.JsonResult.ErrorCode.NO_ERROR;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -83,26 +78,5 @@ public class PatientControllerTest extends BaseRestApiTest {
                 .andExpect(jsonPath("$[0].gender", is(Gender.female.name())))
                 .andExpect(jsonPath("$[1].name", is(anotherPatientName)))
                 .andExpect(jsonPath("$[1].gender", is(Gender.male.name())));
-    }
-
-    @Test
-    public void testCreateNewPatient() throws Exception {
-        String patientName = "Julia Roberts";
-
-        PatientDto patientDto = new PatientDto();
-        patientDto.setName(patientName);
-        patientDto.setGender(Gender.female);
-
-        PatientService patientService = Mockito.mock(PatientService.class);
-        patientController.setPatientService(patientService);
-
-        JsonResult result = new JsonResult<>(NO_ERROR);
-        result.setResult(patientDto);
-        ResponseEntity<JsonResult> responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
-
-        Mockito.when(patientService.save(patientDto)).thenReturn(patientDto);
-
-        mockMvc.perform(post("/patients"))
-                .andExpect(status().isOk());
     }
 }
