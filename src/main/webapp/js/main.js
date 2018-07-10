@@ -29,7 +29,7 @@ $(function () {
         put('/studies/status/' + studyId, json);
     });
 
-    $("#patient-submit").on("click", function () {
+    $("#patient-submit").on("click", function (event) {
         event.preventDefault();
 
         var formData = $("#patient").serializeArray();

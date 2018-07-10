@@ -1,6 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <!DOCTYPE html>
@@ -9,19 +7,7 @@
     <title>Procedure scheduling project</title>
 
     <link rel="stylesheet" type="text/css" media="all" href="/css/main.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="/css/jquery-ui.min.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="/css/jquery-ui.structure.min.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="/css/jquery-ui.theme.min.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="/css/jquery.timepicker.min.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="/css/bootstrap-datepicker.min.css"/>
-
-    <script src="/js/main.js" type="text/javascript"></script>
     <script src="/js/jquery-3.3.1.min.js" type="text/javascript"></script>
-    <script src="/js/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="/js/jquery.timepicker.min.js" type="text/javascript"></script>
-    <script src="/js/datepair.min.js" type="text/javascript"></script>
-    <script src="/js/jquery.datepair.min.js" type="text/javascript"></script>
-    <script src="/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
@@ -40,6 +26,7 @@
         <th>Patient name</th>
         <th>Room name</th>
         <th>Status</th>
+        <th></th>
     </tr>
     <c:choose>
         <c:when test="${empty studies}">
@@ -53,8 +40,7 @@
         </c:when>
         <c:otherwise>
             <c:forEach items="${studies}" var="study" varStatus="count">
-                <spring:url value="/studies/edit/${study.id}#" var="url"/>
-                <tr onclick="window.location.href='${url}'">
+                <tr onclick="window.location.href='${contextPath}/studies/edit/${study.id}#'">
                     <td><a href="${url}">${count.index + 1}</a></td>
                     <td>${study.description}</td>
                     <td>${study.startTime}</td>
@@ -63,6 +49,7 @@
                     <td>${study.patientName}</td>
                     <td>${study.roomName}</td>
                     <td>${study.status}</td>
+                    <td>Edit</td>
                 </tr>
             </c:forEach>
         </c:otherwise>

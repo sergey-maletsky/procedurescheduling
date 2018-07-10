@@ -14,10 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -28,20 +27,26 @@ import java.util.stream.Stream;
 
 import static com.procedure.scheduling.dto.JsonResult.ErrorCode.NO_ERROR;
 
-@Controller
+@RestController
 @RequestMapping("/studies")
 public class StudyController extends BaseController {
 
     private static final Logger log = LoggerFactory.getLogger(StudyController.class);
 
+    private final StudyService studyService;
+    private final DoctorService doctorService;
+    private final PatientService patientService;
+    private final RoomService roomService;
+
     @Autowired
-    private StudyService studyService;
-    @Autowired
-    private DoctorService doctorService;
-    @Autowired
-    private PatientService patientService;
-    @Autowired
-    private RoomService roomService;
+    public StudyController(StudyService studyService, DoctorService doctorService,
+                           PatientService patientService, RoomService roomService) {
+
+        this.studyService = studyService;
+        this.doctorService = doctorService;
+        this.patientService = patientService;
+        this.roomService = roomService;
+    }
 
     @ApiOperation("Get a study by id")
     @GetMapping("/{id}")
@@ -49,6 +54,7 @@ public class StudyController extends BaseController {
 
         StudyDto existingStudy = studyService.findOne(id);
         if (Objects.isNull(existingStudy)) {
+            log.error("Study with id = {} not found", id);
             throw new EntityNotFoundException("Study with id " + id + " not found");
         }
         return ResponseEntity.ok(existingStudy);
@@ -63,25 +69,27 @@ public class StudyController extends BaseController {
 
     @ApiOperation("Show the edit study page")
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, Model model) {
+    public ModelAndView edit(@PathVariable Long id, ModelAndView modelAndView) {
 
         StudyDto studyDto = studyService.findOne(id);
-        model.addAttribute("study", studyDto);
-        model.addAttribute("studyStatuses", StudyStatus.values());
+        modelAndView.addObject("study", studyDto);
+        modelAndView.addObject("studyStatuses", StudyStatus.values());
+        modelAndView.setViewName("study");
 
-        return "study";
+        return modelAndView;
     }
 
     @ApiOperation("Show the add study page")
     @GetMapping("/add")
-    public String create(Model model) {
+    public ModelAndView create(ModelAndView modelAndView) {
 
-        model.addAttribute("doctors", doctorService.list());
-        model.addAttribute("rooms", roomService.list());
-        model.addAttribute("patients", patientService.list());
-        model.addAttribute("studyStatuses", StudyStatus.values());
+        modelAndView.addObject("doctors", doctorService.list());
+        modelAndView.addObject("rooms", roomService.list());
+        modelAndView.addObject("patients", patientService.list());
+        modelAndView.addObject("studyStatuses", StudyStatus.values());
+        modelAndView.setViewName("scheduling");
 
-        return "scheduling";
+        return modelAndView;
     }
 
     @ApiOperation("Create a new study")
@@ -125,6 +133,7 @@ public class StudyController extends BaseController {
 
         StudyDto existingStudy = studyService.findOne(id);
         if (Objects.isNull(existingStudy)) {
+            log.error("Study with id = {} not found", id);
             throw new EntityNotFoundException("Study with id " + id + " not found");
         }
 

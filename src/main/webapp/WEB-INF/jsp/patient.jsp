@@ -1,6 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <!DOCTYPE html>
@@ -30,12 +28,10 @@
 <p><a href="${contextPath}/">Go to the main page</a></p>
 <p><a href="${contextPath}/studies/add">Go to a study adding</a></p>
 
+Patient creation
 <form id="patient" class="entity-area" name="add_patient" action="" method="post">
-    Patient creation
-    <p>
     <div>Name</div>
     <textarea id="name" name="name"></textarea>
-    </p>
     <p>
         <select name="gender">
             <c:forEach items="${genders}" var="gender">
@@ -49,6 +45,6 @@
     </p>
     <button id="patient-submit">Add patient</button>
 </form>
-<div id="error-field" class="entity-area red"></div>
+<div id="error-field" class="red"></div>
 </body>
 </html>
