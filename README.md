@@ -1,3 +1,5 @@
+Java version is 1.8.0_131
+
 Deployment
 
 I Common information
@@ -11,7 +13,7 @@ II Configuring database
 Database connection settings are in the follow file:
 src/main/resources/spring/database.properties
 
-1. Install PostgreSQL
+1. Install PostgreSQL 9.3
 2. Execute the createdb.sql script within PostgreSQL 
 console under superuser(it's postgres in here): 
 psql -U postgres -a -f createdb.sql
@@ -28,4 +30,7 @@ the root of project:
 1. ./gradlew clean build
 2. java -jar build/libs/procedurescheduling-1.0-SNAPSHOT.jar
 
-IV Java version is 1.8.0_131
+IV Docker
+You can run this application using by docker image
+Some gradle tasks was created to build and push a new docker image 
+to the hub repository.

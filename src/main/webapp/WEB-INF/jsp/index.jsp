@@ -1,17 +1,8 @@
+<%@ taglib prefix="scheduling" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Procedure scheduling project</title>
-
-    <link rel="stylesheet" type="text/css" media="all" href="/css/main.css"/>
-    <script src="/js/jquery-3.3.1.min.js" type="text/javascript"></script>
-
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-</head>
-<body>
+<scheduling:includes/>
 
 <p><a href="${contextPath}/studies/add">Go to a study adding</a></p>
 <p><a href="${contextPath}/patients/add">Go to a patient adding</a></p>

@@ -1,27 +1,9 @@
+<%@ taglib prefix="scheduling" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Procedure scheduling project</title>
+<scheduling:includes/>
 
-    <link rel="stylesheet" type="text/css" media="all" href="/css/main.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="/css/jquery-ui.min.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="/css/jquery-ui.structure.min.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="/css/jquery-ui.theme.min.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="/css/jquery.timepicker.min.css"/>
-
-    <script src="/js/jquery-3.3.1.min.js" type="text/javascript"></script>
-    <script src="/js/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="/js/jquery.timepicker.min.js" type="text/javascript"></script>
-    <script src="/js/datepair.min.js" type="text/javascript"></script>
-    <script src="/js/jquery.datepair.min.js" type="text/javascript"></script>
-    <script src="/js/main.js" type="text/javascript"></script>
-
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-</head>
-<body>
 <p><a href="${contextPath}/">Go to the main page</a></p>
 <p><a href="${contextPath}/patients/add">Go to a patient adding</a></p>
 

@@ -9,13 +9,14 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 jar.enabled = false
 
 group 'com.procedure.scheduling'
-version '1.0-SNAPSHOT'
+version '1.0.0'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -45,8 +46,29 @@ dependencies {
     compile("org.jetbrains:annotations:16.0.2")
 
     compile("org.apache.tomcat.embed:tomcat-embed-jasper:9.0.10")
-    compile group: 'jstl', name: 'jstl', version: '1.2'
+    compile("org.glassfish.web:javax.servlet.jsp.jstl:1.2.4")
+    compile("jstl:jstl:1.2")
 
     compile("org.flywaydb:flyway-core:4.2.0")
     compile("org.postgresql:postgresql:42.2.2")
+}
+
+task copyDockerfileToLibs(type: Copy) {
+    from 'src/docker'
+    into 'build/libs/'
+}
+
+task buildDockerImage(type: Exec) {
+    workingDir 'build/libs/'
+    commandLine 'docker', 'build', '-t', 'sergeymaletsky/' + project.name, '.'
+    dependsOn build
+    dependsOn copyDockerfileToLibs
+    mustRunAfter build
+    mustRunAfter copyDockerfileToLibs
+}
+
+task pushDockerImage(type: Exec) {
+    commandLine 'docker', 'push', 'sergeymaletsky/' + project.name
+    dependsOn buildDockerImage
+    mustRunAfter buildDockerImage
 }
