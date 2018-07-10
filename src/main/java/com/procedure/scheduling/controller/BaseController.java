@@ -15,7 +15,7 @@ public abstract class BaseController {
         T save(T t);
     }
 
-    protected <T> ResponseEntity<JsonResult> createResponse(T study, BindingResult bindingResult, BaseSaver<T> saver) {
+    protected <T> ResponseEntity<JsonResult> createResponse(T dto, BindingResult bindingResult, BaseSaver<T> saver) {
 
         JsonResult result;
         ResponseEntity<JsonResult> responseEntity;
@@ -23,10 +23,10 @@ public abstract class BaseController {
             result = setValidationErrors(bindingResult);
             responseEntity = new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
         } else {
-            T newStudy = saver.save(study);
+            T newDto = saver.save(dto);
             result = new JsonResult<>(NO_ERROR);
-            result.setResult(newStudy);
-            responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
+            result.setResult(newDto);
+            responseEntity = new ResponseEntity<>(result, HttpStatus.CREATED);
         }
 
         return responseEntity;

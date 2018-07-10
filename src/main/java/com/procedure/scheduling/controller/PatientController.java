@@ -26,8 +26,12 @@ public class PatientController extends BaseController {
 
     private static final Logger log = LoggerFactory.getLogger(PatientController.class);
 
-    @Autowired
     private PatientService patientService;
+
+    @Autowired
+    public void setPatientService(PatientService patientService) {
+        this.patientService = patientService;
+    }
 
     @ApiOperation("Get a patient by id")
     @GetMapping("/{id}")

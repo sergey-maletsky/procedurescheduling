@@ -21,6 +21,17 @@ CREATE TABLE IF NOT EXISTS doctor
 CREATE UNIQUE INDEX IF NOT EXISTS doctor_name_idx
   ON doctor (name);
 
+CREATE TABLE IF NOT EXISTS patient
+(
+  id BIGINT PRIMARY KEY NOT NULL,
+  name VARCHAR NOT NULL,
+  sex VARCHAR,
+  date_of_birth TIMESTAMP
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS patient_name_idx
+  ON patient (name);
+
 CREATE TABLE IF NOT EXISTS study
 (
   id BIGINT PRIMARY KEY NOT NULL,
@@ -35,17 +46,6 @@ CREATE TABLE IF NOT EXISTS study
   CONSTRAINT study_patient FOREIGN KEY (patient_id) REFERENCES patient (id),
   CONSTRAINT study_room FOREIGN KEY (room_id) REFERENCES room (id)
 );
-
-CREATE TABLE IF NOT EXISTS patient
-(
-  id BIGINT PRIMARY KEY NOT NULL,
-  name VARCHAR NOT NULL,
-  sex VARCHAR,
-  date_of_birth TIMESTAMP
-);
-
-CREATE UNIQUE INDEX IF NOT EXISTS patient_name_idx
-  ON patient (name);
 
 INSERT INTO room (id, name) VALUES (COALESCE((select id from room order by id desc limit 1), 0) + 1, 'ROOM 1') ON CONFLICT (name) DO NOTHING;
 INSERT INTO room (id, name) VALUES (COALESCE((select id from room order by id desc limit 1), 0) + 1, 'ROOM 2') ON CONFLICT (name) DO NOTHING;

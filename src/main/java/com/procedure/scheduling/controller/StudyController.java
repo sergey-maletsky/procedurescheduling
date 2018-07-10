@@ -32,18 +32,25 @@ public class StudyController extends BaseController {
 
     private static final Logger log = LoggerFactory.getLogger(StudyController.class);
 
-    private final StudyService studyService;
-    private final DoctorService doctorService;
-    private final PatientService patientService;
-    private final RoomService roomService;
+    private StudyService studyService;
+    private DoctorService doctorService;
+    private PatientService patientService;
+    private RoomService roomService;
 
     @Autowired
-    public StudyController(StudyService studyService, DoctorService doctorService,
-                           PatientService patientService, RoomService roomService) {
-
+    public void setStudyService(StudyService studyService) {
         this.studyService = studyService;
+    }
+    @Autowired
+    public void setDoctorService(DoctorService doctorService) {
         this.doctorService = doctorService;
+    }
+    @Autowired
+    public void setPatientService(PatientService patientService) {
         this.patientService = patientService;
+    }
+    @Autowired
+    public void setRoomService(RoomService roomService) {
         this.roomService = roomService;
     }
 

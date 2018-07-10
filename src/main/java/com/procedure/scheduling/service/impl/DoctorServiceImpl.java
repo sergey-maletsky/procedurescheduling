@@ -27,7 +27,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Nullable
     public DoctorDto findOne(@NotNull Long id) {
 
-        Doctor doctor = repository.findById(id).get();
+        Doctor doctor = repository.findById(id).orElse(null);
         return converter.convert(doctor, DoctorDto.class);
     }
 

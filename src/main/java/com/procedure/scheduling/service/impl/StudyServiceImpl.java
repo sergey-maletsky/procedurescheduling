@@ -51,7 +51,7 @@ public class StudyServiceImpl implements StudyService {
     @Nullable
     public StudyDto findOne(@NotNull Long id) {
 
-        Study study = repository.findById(id).get();
+        Study study = repository.findById(id).orElse(null);
         return converter.convert(study, StudyDto.class);
     }
 

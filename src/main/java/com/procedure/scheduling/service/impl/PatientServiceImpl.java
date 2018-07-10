@@ -31,7 +31,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDto findOne(@NotNull Long id) {
 
-        Patient patient = repository.findById(id).get();
+        Patient patient = repository.findById(id).orElse(null);
         return converter.convert(patient, PatientDto.class);
     }
 

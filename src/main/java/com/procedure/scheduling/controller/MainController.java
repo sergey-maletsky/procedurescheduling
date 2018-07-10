@@ -8,16 +8,16 @@ import com.procedure.scheduling.service.PatientService;
 import com.procedure.scheduling.service.StudyService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/")
-public class SchedulingController {
+public class MainController {
 
     @Autowired
     private StudyService studyService;
@@ -27,15 +27,16 @@ public class SchedulingController {
 
     @ApiOperation("Show the main page")
     @GetMapping
-    public String index(Model model) {
+    public ModelAndView index(ModelAndView modelAndView) {
 
         List<StudyDto> studies = studyService.list();
         List<PatientDto> patients = patientService.list();
-        model.addAttribute("genders", Gender.values());
-        model.addAttribute("studies", studies);
-        model.addAttribute("patients", patients);
-        model.addAttribute("studyStatuses", StudyStatus.values());
+        modelAndView.addObject("genders", Gender.values());
+        modelAndView.addObject("studies", studies);
+        modelAndView.addObject("patients", patients);
+        modelAndView.addObject("studyStatuses", StudyStatus.values());
+        modelAndView.setViewName("index");
 
-        return "index";
+        return modelAndView;
     }
 }

@@ -29,7 +29,7 @@ public class ExceptionHandlingController {
     public ResponseEntity<JsonResult> handleException(EntityNotFoundException ex) {
 
         log.error("Entity not found", ex);
-        return getResponse(ENTITY_NOT_FOUND, ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return getResponse(ENTITY_NOT_FOUND, ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(NotUniqueException.class)
