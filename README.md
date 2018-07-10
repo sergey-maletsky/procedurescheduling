@@ -18,3 +18,14 @@ psql -U postgres -a -f createdb.sql
 
 The script will add "pscheduling" database as well as 
 add new user with name "pscheduler" with access rights only to this database. 
+
+III Build automation tool
+Thereis Gradle as a build automation tool in this project.
+
+To build and run project you could execute following
+command in the terminate or console while you are in 
+the root of project:
+1. ./gradlew clean build
+2. java -jar build/libs/procedurescheduling-1.0-SNAPSHOT.jar
+
+IV Java version is 1.8.0_131
