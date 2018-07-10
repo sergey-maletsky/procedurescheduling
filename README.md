@@ -28,7 +28,8 @@ To build and run project you could execute following
 command in the terminate or console while you are in 
 the root of project:
 1. ./gradlew clean build
-2. java -jar build/libs/procedurescheduling-1.0-SNAPSHOT.jar
+2. ./gradlew bootJar
+2. java -jar build/libs/procedurescheduling-1.0.0.jar
 
 IV Docker
 You can run this application using by docker image
