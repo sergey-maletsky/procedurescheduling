@@ -1,9 +1,11 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE")
+        classpath("com.bmuschko:gradle-docker-plugin:3.2.4")
     }
 }
 
@@ -12,6 +14,7 @@ apply plugin: 'idea'
 apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.bmuschko.docker-remote-api'
 
 jar.enabled = false
 
@@ -53,22 +56,33 @@ dependencies {
     compile("org.postgresql:postgresql:42.2.2")
 }
 
-task copyDockerfileToLibs(type: Copy) {
+task copyDockerfileToTemp(type: Copy) {
+    dependsOn build
+    mustRunAfter build
     from 'src/docker'
-    into 'build/libs/'
+    from 'build/libs/'
+    into 'build/tmp/docker'
+    rename project.name + "-" + version + '.war', 'ROOT.war'
 }
 
 task buildDockerImage(type: Exec) {
-    workingDir 'build/libs/'
-    commandLine 'docker', 'build', '-t', 'sergeymaletsky/' + project.name, '.'
-    dependsOn build
-    dependsOn copyDockerfileToLibs
-    mustRunAfter build
-    mustRunAfter copyDockerfileToLibs
+    workingDir 'build/tmp/docker/'
+    commandLine('docker', 'build', '-t', 'sergeymaletsky/' + project.name + ':' + version, '.')
+    dependsOn clean
+    dependsOn copyDockerfileToTemp
+    mustRunAfter clean
+    mustRunAfter copyDockerfileToTemp
+}
+
+task dockerRun(type: Exec) {
+    //TODO check if containers was running and kill it before run a new one
+    commandLine 'docker', 'run', '-d', '--net=host', 'sergeymaletsky/' + project.name + ':' + version
+    dependsOn buildDockerImage
+    mustRunAfter buildDockerImage
 }
 
 task pushDockerImage(type: Exec) {
-    commandLine 'docker', 'push', 'sergeymaletsky/' + project.name
+    commandLine 'docker', 'push', 'sergeymaletsky/' + project.name + ':' + version
     dependsOn buildDockerImage
     mustRunAfter buildDockerImage
 }
